@@ -23,10 +23,6 @@ public class AuthController implements EnvironmentAware {
 
 	@PostMapping("auth")
 	public User login(@RequestParam("user") String name, @RequestParam("password") String pwd) {
-		
-		System.out.println("user: ".concat(name)
-				.concat("\npassword: ").concat(pwd));
-		
 		String token = getJWTToken(name);
 		User user = new User();
 		user.setName(name);
