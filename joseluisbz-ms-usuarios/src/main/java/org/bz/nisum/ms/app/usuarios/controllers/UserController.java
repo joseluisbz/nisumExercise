@@ -44,7 +44,7 @@ public class UserController {
 	@GetMapping("/{id}")
 	public ResponseEntity<?> view(@PathVariable Long id) {
 		Optional<User> opt = userService.findById(id);
-		if (opt.isEmpty()) {
+		if (!opt.isPresent()) {
 			return ResponseEntity.notFound().build();
 		}
 		return ResponseEntity.ok().body(opt.get());
@@ -113,7 +113,7 @@ public class UserController {
 		}
 		
 		Optional<User> opt = userService.findById(id);
-		if (opt.isEmpty()) {
+		if (!opt.isPresent()) {
 			return ResponseEntity.notFound().build();
 		}
 		
