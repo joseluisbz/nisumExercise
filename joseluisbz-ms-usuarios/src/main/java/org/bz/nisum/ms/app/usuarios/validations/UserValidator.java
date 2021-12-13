@@ -21,7 +21,7 @@ public class UserValidator implements Validator {
 	public void validate(Object target, Errors errors) {
 		User user = (User)target;
 		if (!user.getPassword().matches(regexp)) {
-			errors.rejectValue("password", "badpattern.user.password", "Pattern expected: " + regexp + ".");
+			errors.rejectValue("password", "badpattern.user.password", "Expected Pattern: ".concat(regexp));
 		}
 	}
 

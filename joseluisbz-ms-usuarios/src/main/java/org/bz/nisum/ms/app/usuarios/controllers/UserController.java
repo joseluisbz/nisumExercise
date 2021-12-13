@@ -6,7 +6,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.bz.nisum.ms.app.usuarios.entities.User;
-import org.bz.nisum.ms.app.usuarios.errors.DeafultException;
+import org.bz.nisum.ms.app.usuarios.errors.DefaultException;
 import org.bz.nisum.ms.app.usuarios.errors.ExistingMailException;
 import org.bz.nisum.ms.app.usuarios.errors.PatternEmailException;
 import org.bz.nisum.ms.app.usuarios.errors.PatternPasswordException;
@@ -129,7 +129,7 @@ public class UserController {
 			User savedUser = userService.save(editedUser);
 			return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
 		} catch (Exception exp) {
-			throw new DeafultException(exp.getLocalizedMessage());
+			throw new DefaultException(exp.getLocalizedMessage());
 		}
 	}
 

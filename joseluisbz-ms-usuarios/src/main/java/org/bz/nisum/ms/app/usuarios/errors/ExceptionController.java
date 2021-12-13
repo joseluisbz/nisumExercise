@@ -29,7 +29,7 @@ public class ExceptionController {
 		return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
 	}
 
-	@ExceptionHandler(DeafultException.class)
+	@ExceptionHandler(DefaultException.class)
 	public ResponseEntity<CustomErrorResponse> defaultError(Exception ex) {
 		CustomErrorResponse errors = new CustomErrorResponse();
 		errors.setMessage(ex.getLocalizedMessage());
