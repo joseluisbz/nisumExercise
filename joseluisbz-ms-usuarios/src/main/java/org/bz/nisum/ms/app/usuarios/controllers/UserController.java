@@ -27,6 +27,9 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -36,11 +39,13 @@ public class UserController {
 	
 	@Autowired UserValidator userValidator;
 	
+	@Operation(summary = "list Users", security = @SecurityRequirement(name = "bearerAuth"))
 	@GetMapping
 	public ResponseEntity<?> list(){
 		return ResponseEntity.ok().body(userService.findAll());
 	}
 
+	@Operation(summary = "view User", security = @SecurityRequirement(name = "bearerAuth"))
 	@GetMapping("/{id}")
 	public ResponseEntity<?> view(@PathVariable Long id) {
 		Optional<User> opt = userService.findById(id);
@@ -49,7 +54,8 @@ public class UserController {
 		}
 		return ResponseEntity.ok().body(opt.get());
 	}
-	
+
+	@Operation(summary = "create User", security = @SecurityRequirement(name = "bearerAuth"))
 	@PostMapping
 	public ResponseEntity<?> create(@RequestHeader(value="Authorization") String token, 
 			@Valid @RequestBody User user, BindingResult result) {
@@ -82,7 +88,8 @@ public class UserController {
 		User createdUser = userService.save(user);
 		return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
 	}
-	
+
+	@Operation(summary = "edit User", security = @SecurityRequirement(name = "bearerAuth"))
 	@PutMapping("/{id}")
 	public ResponseEntity<?> edit(@RequestHeader(value="Authorization") String token, 
 			@Valid @RequestBody User user, BindingResult result, @PathVariable Long id) {
@@ -133,6 +140,7 @@ public class UserController {
 		}
 	}
 
+	@Operation(summary = "delete User", security = @SecurityRequirement(name = "bearerAuth"))
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> delete(@PathVariable Long id) {
 		userService.deleteById(id);
