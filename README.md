@@ -80,6 +80,7 @@ Se hizo la prueba con la expiración del *token* generado por *auth*!
 También se puede ver que el *token* generado se almacena a nivel de Usuario como se requirió.
 
 **Pruebas con Swagger**
+* Ingresando a la interfaz de la documentación.
 Se puede acceder a la URL: http://localhost:8001/open-api/api-docs o directamente a la URL: http://localhost:8001/open-api/swagger-ui-custom.html
 
 * Ingresando a la Interface de Swagger
