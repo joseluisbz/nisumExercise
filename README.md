@@ -21,6 +21,9 @@ INSERT INTO PHONES (number, city_code, country_code, user_id) VALUES(12345, 1, 5
 INSERT INTO PHONES (number, city_code, country_code, user_id) VALUES(09876, 5, 57, 2);
 ```
 
+**Diagrama de la solución**
+![Diagram](./joseluisbz-ms-usuarios.png)
+
 **¿Cómo Probarlo?**
 
 Usando **Git**, se puede clonar este repositorio:
