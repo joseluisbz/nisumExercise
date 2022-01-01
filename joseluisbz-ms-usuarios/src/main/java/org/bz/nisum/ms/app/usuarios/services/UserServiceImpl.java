@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserServiceIface {
 	@Transactional
 	public User save(User user) {
 		if (user.getId() != null) {
-			phoneDao.deleteByUser_Id(user.getId());
+			//phoneDao.deleteByUser_Id(user.getId());
 			List<Phone> listOldPhones = phoneDao.findByUser_Id(user.getId());
 			Set<Phone> listNewPhones = user.getPhones();
 			if (listNewPhones != null && listOldPhones != null) {
