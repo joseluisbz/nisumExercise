@@ -79,3 +79,23 @@ Se hizo la prueba con la expiración del *token* generado por *auth*!
 ![Showing Token View](./Postman-Images/ShowingToken_View.png)
 También se puede ver que el *token* generado se almacena a nivel de Usuario como se requirió.
 
+**Pruebas con Swagger**
+* Ingresando a la interfaz de la documentación.
+Se puede acceder a la URL: http://localhost:8001/open-api/api-docs o directamente a la URL: http://localhost:8001/open-api/swagger-ui-custom.html
+
+* Ingresando a la Interface de Swagger
+![Not Valid Token View](./Swagger-Images/FirstPage.png)
+Al iniciar se puede notar que no se está autenticado para hacer uso de las API's de usuarios (*Authorize* candado abierto).
+
+* Obteniendo el token Bearer
+![Get Bearer Token](./Swagger-Images/GetBearer.png)
+En el *auth-controller* Se ingresa cualquiet valor en *Usuario*, y cualquier valor para *Password*, luego se presiona el botón *Execute* y en el *json* de respuesta se copia del atributo *token* el Bearer (Se excluyen las comillas, la palabra 'Bearer ' con el espacio).
+
+* Autorizando
+![Authorize](./Swagger-Images/PastingBearer.png)
+A  nivel de *user-controller*, se presiona el botón con el candado abierto y se pega el Bearer en el campo *value* de la caja de diálogo y se cierra con el botón *close*.
+Una vez hecho lo anterior, se mostrará el botón con el candado cerrado. Ya se podría probar la API.
+
+* Probando
+![Testing With Bearer](./Swagger-Images/TestingWithBearer.png)
+Como se puede ver en la imagen anterior, se puede consumir la API cuando el usuario haya sido autorizado.
