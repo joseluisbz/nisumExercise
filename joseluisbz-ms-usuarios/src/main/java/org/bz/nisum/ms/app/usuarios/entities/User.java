@@ -44,7 +44,7 @@ public class User implements Serializable {
 	private String password;
 
     @JsonManagedReference
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "user")
 	private Set<Phone> phones;
 
 	@Temporal(TemporalType.TIMESTAMP)

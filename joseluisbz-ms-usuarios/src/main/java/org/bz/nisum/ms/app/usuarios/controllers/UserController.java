@@ -48,11 +48,11 @@ public class UserController {
 	@Operation(summary = "view User", security = @SecurityRequirement(name = "bearerAuth"))
 	@GetMapping("/{id}")
 	public ResponseEntity<?> view(@PathVariable Long id) {
-		Optional<User> opt = userService.findById(id);
-		if (!opt.isPresent()) {
+		Optional<User> optionalStoredUser = userService.findById(id);
+		if (!optionalStoredUser.isPresent()) {
 			return ResponseEntity.notFound().build();
 		}
-		return ResponseEntity.ok().body(opt.get());
+		return ResponseEntity.ok().body(optionalStoredUser.get());
 	}
 
 	@Operation(summary = "create User", security = @SecurityRequirement(name = "bearerAuth"))
@@ -80,8 +80,8 @@ public class UserController {
 		}
 		user.setIsactive(true);
 		user.setToken(token);
-		Optional<User> opt = userService.findByEmail(user.getEmail());
-		if (opt.isPresent()) {
+		Optional<User> optionalStoredUser = userService.findByEmail(user.getEmail());
+		if (optionalStoredUser.isPresent()) {
 			throw new ExistingMailException(user.getEmail());
 		}
 		
@@ -119,12 +119,12 @@ public class UserController {
 			}
 		}
 		
-		Optional<User> opt = userService.findById(id);
-		if (!opt.isPresent()) {
+		Optional<User> optionalStoredUser = userService.findById(id);
+		if (!optionalStoredUser.isPresent()) {
 			return ResponseEntity.notFound().build();
 		}
 		
-		User editedUser = opt.get();
+		User editedUser = optionalStoredUser.get();
 		editedUser.setName(user.getName());
 		editedUser.setEmail(user.getEmail());
 		editedUser.setPassword(user.getPassword());

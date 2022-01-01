@@ -134,13 +134,13 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJzb2Z0dGVrSldUIiwic3ViIjoiam9zZSIsImF1dGhvcml0aWVzIjpbIlJPTEVfVVNFUiJdLCJpYXQiOjE2MzkyODQ4NzEsImV4cCI6MTYzOTI4NTQ3MX0.7SW8ggkDH4GGxPsAdk8fTk9nYKiDdmumfPdQSiIn3QCQwDgN2e3_Mw00ZCZ1yu40MvQVU6II5Fo5wiU57qXs3w",
+						"value": "{{tokenNisum}}",
 						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"id\": 2,\r\n    \"name\": \"Fulana\",\r\n    \"email\": \"alcirab@gmail.com\",\r\n    \"password\": \"a\",\r\n    \"phones\": [\r\n        {\r\n            \"user_id\": 2,\r\n            \"number\": 12345,\r\n            \"cityCode\": 1,\r\n            \"countryCode\": 57\r\n        },\r\n        {\r\n            \"user_id\": 2,\r\n            \"number\": 8888,\r\n            \"cityCode\": 2,\r\n            \"countryCode\": 55\r\n        }\r\n    ],\r\n    \"token\": \"token1\"\r\n}",
+					"raw": "{\r\n    \"id\": 2,\r\n    \"name\": \"Fulana\",\r\n    \"email\": \"alcirazrc@gmail.com\",\r\n    \"password\": \"a\",\r\n    \"phones\": [\r\n        {\r\n            \"id\": 2,\r\n            \"user_id\": 2,\r\n            \"number\": 98765,\r\n            \"cityCode\": 6,\r\n            \"countryCode\": 54\r\n        },\r\n        {\r\n            \"user_id\": 2,\r\n            \"number\": 12345,\r\n            \"cityCode\": 1,\r\n            \"countryCode\": 57\r\n        },\r\n        {\r\n            \"user_id\": 2,\r\n            \"number\": 8888,\r\n            \"cityCode\": 2,\r\n            \"countryCode\": 55\r\n        }\r\n    ],\r\n    \"token\": \"token1\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -208,6 +208,15 @@
 						"auth"
 					]
 				}
+			},
+			"response": []
+		},
+		{
+			"name": "Swagger",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": null
 			},
 			"response": []
 		}
