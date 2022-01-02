@@ -11,7 +11,7 @@ import org.bz.nisum.ms.app.usuarios.errors.ExistingMailException;
 import org.bz.nisum.ms.app.usuarios.errors.PatternEmailException;
 import org.bz.nisum.ms.app.usuarios.errors.PatternPasswordException;
 import org.bz.nisum.ms.app.usuarios.services.UserServiceIface;
-import org.bz.nisum.ms.app.usuarios.validations.UserValidator;
+import org.bz.nisum.ms.app.usuarios.validations.UserPasswordValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +37,7 @@ public class UserController {
 	@Autowired
 	private UserServiceIface userService;
 	
-	@Autowired UserValidator userValidator;
+	@Autowired UserPasswordValidator userPasswordValidator;
 	
 	@Operation(summary = "list Users", security = @SecurityRequirement(name = "bearerAuth"))
 	@GetMapping
@@ -48,6 +48,7 @@ public class UserController {
 	@Operation(summary = "view User", security = @SecurityRequirement(name = "bearerAuth"))
 	@GetMapping("/{id}")
 	public ResponseEntity<?> view(@PathVariable Long id) {
+		
 		Optional<User> optionalStoredUser = userService.findById(id);
 		if (!optionalStoredUser.isPresent()) {
 			return ResponseEntity.notFound().build();
@@ -59,31 +60,17 @@ public class UserController {
 	@PostMapping
 	public ResponseEntity<?> create(@RequestHeader(value="Authorization") String token, 
 			@Valid @RequestBody User user, BindingResult result) {
-		userValidator.validate(user, result);
-		if (result.hasErrors()) {
-			FieldError passwordFieldError = result.getAllErrors()
-					.stream().map(e -> (FieldError) e)
-					.filter(f -> f.getField().equals("password"))
-					.findFirst().orElse(null);
-			
-			if (passwordFieldError != null) {
-				throw new PatternPasswordException(passwordFieldError.getDefaultMessage());
-			}
-			FieldError emailFieldError = result.getAllErrors()
-					.stream().map(e -> (FieldError) e)
-					.filter(f -> f.getField().equals("email"))
-					.findFirst().orElse(null);
-			
-			if (emailFieldError != null) {
-				throw new PatternEmailException(emailFieldError.getDefaultMessage());
-			}
-		}
-		user.setIsactive(true);
-		user.setToken(token);
+		
+		userPasswordValidator.validate(user, result);
+		throwExceptionIfErrors(result);
+		
 		Optional<User> optionalStoredUser = userService.findByEmail(user.getEmail());
 		if (optionalStoredUser.isPresent()) {
 			throw new ExistingMailException(user.getEmail());
 		}
+		
+		user.setIsactive(true);
+		user.setToken(token);
 		
 		User createdUser = userService.save(user);
 		return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
@@ -93,25 +80,10 @@ public class UserController {
 	@PutMapping("/{id}")
 	public ResponseEntity<?> edit(@RequestHeader(value="Authorization") String token, 
 			@Valid @RequestBody User user, BindingResult result, @PathVariable Long id) {
-		userValidator.validate(user, result);
-		if (result.hasErrors()) {
-			FieldError passwordFieldError = result.getAllErrors()
-					.stream().map(e -> (FieldError) e)
-					.filter(f -> f.getField().equals("password"))
-					.findFirst().orElse(null);
-			
-			if (passwordFieldError != null) {
-				throw new PatternPasswordException(passwordFieldError.getDefaultMessage());
-			}
-			FieldError emailFieldError = result.getAllErrors()
-					.stream().map(e -> (FieldError) e)
-					.filter(f -> f.getField().equals("email"))
-					.findFirst().orElse(null);
-			
-			if (emailFieldError != null) {
-				throw new PatternEmailException(emailFieldError.getDefaultMessage());
-			}
-		}
+		
+		userPasswordValidator.validate(user, result);
+		throwExceptionIfErrors(result);
+		
 		if (user.getEmail() != null && !user.getEmail().isEmpty()) {
 			boolean emailUsed = userService.findByEmailAndIdNot(user.getEmail(), id).size() > 0;
 			if (emailUsed) {
@@ -133,8 +105,8 @@ public class UserController {
 		editedUser.setIsactive(user.isIsactive());
 		editedUser.setToken(token);
 		try {
-			User savedUser = userService.save(editedUser);
-			return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
+			User updatedUser = userService.save(editedUser);
+			return ResponseEntity.status(HttpStatus.CREATED).body(updatedUser);
 		} catch (Exception exp) {
 			throw new DefaultException(exp.getLocalizedMessage());
 		}
@@ -145,5 +117,26 @@ public class UserController {
 	public ResponseEntity<?> delete(@PathVariable Long id) {
 		userService.deleteById(id);
 		return ResponseEntity.noContent().build();
+	}
+	
+	private void throwExceptionIfErrors(BindingResult result) {
+		if (result.hasErrors()) {
+			FieldError passwordFieldError = result.getAllErrors()
+					.stream().map(e -> (FieldError) e)
+					.filter(f -> f.getField().equals("password"))
+					.findFirst().orElse(null);
+			
+			if (passwordFieldError != null) {
+				throw new PatternPasswordException(passwordFieldError.getDefaultMessage());
+			}
+			FieldError emailFieldError = result.getAllErrors()
+					.stream().map(e -> (FieldError) e)
+					.filter(f -> f.getField().equals("email"))
+					.findFirst().orElse(null);
+			
+			if (emailFieldError != null) {
+				throw new PatternEmailException(emailFieldError.getDefaultMessage());
+			}
+		}
 	}
 }
